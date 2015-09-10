@@ -1,0 +1,26 @@
+---
+title: "data manipulation with R 2nd"
+author: "qiufei"
+date: "September 10, 2015"
+output:
+  html_document:
+    keep_md: yes
+    number_sections: yes
+    theme: readable
+    toc: yes
+  word_document: default
+---
+
+# introduction to R data types and basic operation
+
+R has a very steep learning curve like python,octave,and sas. However unlike octave and sas, we can find a larger number of freely available resources and tutorials on the web to get help.
+
+
+## an interesting calculation
+
+```{r}
+1-5*0.2
+# you think they are same
+1-0.2-0.2-0.2-0.2-0.2
+```
+
