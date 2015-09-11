@@ -11,10 +11,32 @@ output:
   word_document: default
 ---
 
+R is a domain-specific programming language, specially designed to perform statistical analysis on data.
+
+
 # introduction to R data types and basic operation
 
 R has a very steep learning curve like python,octave,and sas. However unlike octave and sas, we can find a larger number of freely available resources and tutorials on the web to get help.
 
+a collection of data values stored in a single object is known as vector.
+
+## data type
+
+whatever we do in R, is stored as objects. An R objects is anything thant can be assigned to a variable of interest.
+
+the mode and class are the most important attributes of an R objects.
+
+if an R object contains both numeric and logical elements, the mode of that object will be numberic and ,in this case, the logical element automatically gets converted into a numeric element. the logical element `TRUE` convets to 1 and `FALSE` converts to 0.
+
+on the other hand, if any R object contains a character element, along with both numerica and logical elements, it automatically converts to character mode.
+
+```{r}
+xz=c(1,3,TRUE,5,FALSE,9)
+mode(xz)
+
+xw=c(1,2,TRUE,FALSE,'a')
+mode(xw)
+```
 
 ## an interesting calculation
 
@@ -24,3 +46,92 @@ R has a very steep learning curve like python,octave,and sas. However unlike oct
 1-0.2-0.2-0.2-0.2-0.2
 ```
 
+## a logical vector can be thought as a vector of an index
+
+```{r}
+age=c(20,30,22,25)
+willing=c(TRUE,FALSE,TRUE,FALSE)
+age[willing]
+```
+
+## as.numeric() function only returns internal values of the factor
+
+```{r}
+num.factor=factor(c(5,7,9,5,6,7,3,5,3,9,7))
+num.factor
+
+as.numeric(num.factor)
+
+levels(num.factor)
+
+as.character(num.factor)
+
+# now to convert the 'num.factor' to numeric there are two methods
+# method 1
+as.numeric(as.character(num.factor))
+
+# method 2
+as.numeric(levels(num.factor)[num.factor])
+
+# explain of method 2
+levels(num.factor)
+
+levels(num.factor)[num.factor]
+
+```
+## missing values in R
+
+In R, a numeric missing value is represented by `NA`, while character missing values are represented by `<NA>`. 
+
+# basic data manipulation
+
+## remove unused factors
+
+```{r}
+char.obj="datamanipulation"
+
+substring(char.obj,1:nchar(char.obj),1:nchar(char.obj))
+
+# some explain
+substring("abcdef", 1:6, 1:6)
+
+substring("abcdef", 1:3, 1:6)
+
+factor.obj=factor(substring(char.obj,1:nchar(char.obj),1:nchar(char.obj)),levels=letters)
+
+table(factor.obj)
+
+factor.obj1=factor(factor.obj)
+
+factor.obj2=droplevels(factor.obj)
+
+table(factor.obj1)
+table(factor.obj2)
+```
+
+## lubridate package
+
+```{r}
+library(lubridate)
+mdy("1-1-1970")
+mdy("01-01-1970")
+mdy("1-01-1970")
+mdy("1-01-70")
+
+# heterogeneous date
+hetero_date=c("second chapter due on 2013, august, 24","first chapter submitted on 2013  aug  18","2013 aug 23")
+ymd(hetero_date)
+
+
+# change month
+
+date=dmy("23-07-2013")
+date
+
+month(date)
+month(date)=8
+date
+
+```
+
+we

@@ -70,21 +70,112 @@ img {
 <div id="TOC">
 <ul>
 <li><a href="#introduction-to-r-data-types-and-basic-operation"><span class="toc-section-number">1</span> introduction to R data types and basic operation</a><ul>
-<li><a href="#an-interesting-calculation"><span class="toc-section-number">1.1</span> an interesting calculation</a></li>
+<li><a href="#data-type"><span class="toc-section-number">1.1</span> data type</a></li>
+<li><a href="#an-interesting-calculation"><span class="toc-section-number">1.2</span> an interesting calculation</a></li>
+<li><a href="#a-logical-vector-can-be-thought-as-a-vector-of-an-index"><span class="toc-section-number">1.3</span> a logical vector can be thought as a vector of an index</a></li>
+<li><a href="#as.numeric-function-only-returns-internal-values-of-the-factor"><span class="toc-section-number">1.4</span> as.numeric() function only returns internal values of the factor</a></li>
+<li><a href="#missing-values-in-r"><span class="toc-section-number">1.5</span> missing values in R</a></li>
+</ul></li>
+<li><a href="#basic-data-manipulation"><span class="toc-section-number">2</span> basic data manipulation</a><ul>
+<li><a href="#factor"><span class="toc-section-number">2.1</span> factor</a></li>
 </ul></li>
 </ul>
 </div>
 
+<p>R is a domain-specific programming language, specially designed to perform statistical analysis on data.</p>
 <div id="introduction-to-r-data-types-and-basic-operation" class="section level1">
 <h1><span class="header-section-number">1</span> introduction to R data types and basic operation</h1>
 <p>R has a very steep learning curve like python,octave,and sas. However unlike octave and sas, we can find a larger number of freely available resources and tutorials on the web to get help.</p>
+<p>a collection of data values stored in a single object is known as vector.</p>
+<div id="data-type" class="section level2">
+<h2><span class="header-section-number">1.1</span> data type</h2>
+<p>whatever we do in R, is stored as objects. An R objects is anything thant can be assigned to a variable of interest.</p>
+<p>the mode and class are the most important attributes of an R objects.</p>
+<p>if an R object contains both numeric and logical elements, the mode of that object will be numberic and ,in this case, the logical element automatically gets converted into a numeric element. the logical element <code>TRUE</code> convets to 1 and <code>FALSE</code> converts to 0.</p>
+<p>on the other hand, if any R object contains a character element, along with both numerica and logical elements, it automatically converts to character mode.</p>
+<pre class="r"><code>xz=c(1,3,TRUE,5,FALSE,9)
+mode(xz)</code></pre>
+<pre><code>## [1] &quot;numeric&quot;</code></pre>
+<pre class="r"><code>xw=c(1,2,TRUE,FALSE,'a')
+mode(xw)</code></pre>
+<pre><code>## [1] &quot;character&quot;</code></pre>
+</div>
 <div id="an-interesting-calculation" class="section level2">
-<h2><span class="header-section-number">1.1</span> an interesting calculation</h2>
+<h2><span class="header-section-number">1.2</span> an interesting calculation</h2>
 <pre class="r"><code>1-5*0.2</code></pre>
 <pre><code>## [1] 0</code></pre>
 <pre class="r"><code># you think they are same
 1-0.2-0.2-0.2-0.2-0.2</code></pre>
 <pre><code>## [1] 5.551115e-17</code></pre>
+</div>
+<div id="a-logical-vector-can-be-thought-as-a-vector-of-an-index" class="section level2">
+<h2><span class="header-section-number">1.3</span> a logical vector can be thought as a vector of an index</h2>
+<pre class="r"><code>age=c(20,30,22,25)
+willing=c(TRUE,FALSE,TRUE,FALSE)
+age[willing]</code></pre>
+<pre><code>## [1] 20 22</code></pre>
+</div>
+<div id="as.numeric-function-only-returns-internal-values-of-the-factor" class="section level2">
+<h2><span class="header-section-number">1.4</span> as.numeric() function only returns internal values of the factor</h2>
+<pre class="r"><code>num.factor=factor(c(5,7,9,5,6,7,3,5,3,9,7))
+num.factor</code></pre>
+<pre><code>##  [1] 5 7 9 5 6 7 3 5 3 9 7
+## Levels: 3 5 6 7 9</code></pre>
+<pre class="r"><code>as.numeric(num.factor)</code></pre>
+<pre><code>##  [1] 2 4 5 2 3 4 1 2 1 5 4</code></pre>
+<pre class="r"><code>levels(num.factor)</code></pre>
+<pre><code>## [1] &quot;3&quot; &quot;5&quot; &quot;6&quot; &quot;7&quot; &quot;9&quot;</code></pre>
+<pre class="r"><code>as.character(num.factor)</code></pre>
+<pre><code>##  [1] &quot;5&quot; &quot;7&quot; &quot;9&quot; &quot;5&quot; &quot;6&quot; &quot;7&quot; &quot;3&quot; &quot;5&quot; &quot;3&quot; &quot;9&quot; &quot;7&quot;</code></pre>
+<pre class="r"><code># now to convert the 'num.factor' to numeric there are two methods
+# method 1
+as.numeric(as.character(num.factor))</code></pre>
+<pre><code>##  [1] 5 7 9 5 6 7 3 5 3 9 7</code></pre>
+<pre class="r"><code># method 2
+as.numeric(levels(num.factor)[num.factor])</code></pre>
+<pre><code>##  [1] 5 7 9 5 6 7 3 5 3 9 7</code></pre>
+<pre class="r"><code># explain of method 2
+levels(num.factor)</code></pre>
+<pre><code>## [1] &quot;3&quot; &quot;5&quot; &quot;6&quot; &quot;7&quot; &quot;9&quot;</code></pre>
+<pre class="r"><code>levels(num.factor)[num.factor]</code></pre>
+<pre><code>##  [1] &quot;5&quot; &quot;7&quot; &quot;9&quot; &quot;5&quot; &quot;6&quot; &quot;7&quot; &quot;3&quot; &quot;5&quot; &quot;3&quot; &quot;9&quot; &quot;7&quot;</code></pre>
+</div>
+<div id="missing-values-in-r" class="section level2">
+<h2><span class="header-section-number">1.5</span> missing values in R</h2>
+<p>In R, a numeric missing value is represented by <code>NA</code>, while character missing values are represented by <code>&lt;NA&gt;</code>.</p>
+</div>
+</div>
+<div id="basic-data-manipulation" class="section level1">
+<h1><span class="header-section-number">2</span> basic data manipulation</h1>
+<div id="factor" class="section level2">
+<h2><span class="header-section-number">2.1</span> factor</h2>
+<pre class="r"><code>char.obj=&quot;datamanipulation&quot;
+
+substring(char.obj,1:nchar(char.obj),1:nchar(char.obj))</code></pre>
+<pre><code>##  [1] &quot;d&quot; &quot;a&quot; &quot;t&quot; &quot;a&quot; &quot;m&quot; &quot;a&quot; &quot;n&quot; &quot;i&quot; &quot;p&quot; &quot;u&quot; &quot;l&quot; &quot;a&quot; &quot;t&quot; &quot;i&quot; &quot;o&quot; &quot;n&quot;</code></pre>
+<pre class="r"><code># some explain
+substring(&quot;abcdef&quot;, 1:6, 1:6)</code></pre>
+<pre><code>## [1] &quot;a&quot; &quot;b&quot; &quot;c&quot; &quot;d&quot; &quot;e&quot; &quot;f&quot;</code></pre>
+<pre class="r"><code>substring(&quot;abcdef&quot;, 1:3, 1:6)</code></pre>
+<pre><code>## [1] &quot;a&quot;    &quot;b&quot;    &quot;c&quot;    &quot;abcd&quot; &quot;bcde&quot; &quot;cdef&quot;</code></pre>
+<pre class="r"><code>factor.obj=factor(substring(char.obj,1:nchar(char.obj),1:nchar(char.obj)),levels=letters)
+
+table(factor.obj)</code></pre>
+<pre><code>## factor.obj
+## a b c d e f g h i j k l m n o p q r s t u v w x y z 
+## 4 0 0 1 0 0 0 0 2 0 0 1 1 2 1 1 0 0 0 2 1 0 0 0 0 0</code></pre>
+<pre class="r"><code>factor.obj1=factor(factor.obj)
+
+factor.obj2=droplevels(factor.obj)
+
+table(factor.obj1)</code></pre>
+<pre><code>## factor.obj1
+## a d i l m n o p t u 
+## 4 1 2 1 1 2 1 1 2 1</code></pre>
+<pre class="r"><code>table(factor.obj2)</code></pre>
+<pre><code>## factor.obj2
+## a d i l m n o p t u 
+## 4 1 2 1 1 2 1 1 2 1</code></pre>
 </div>
 </div>
 
