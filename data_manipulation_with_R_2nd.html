@@ -77,12 +77,14 @@ img {
 <li><a href="#missing-values-in-r"><span class="toc-section-number">1.5</span> missing values in R</a></li>
 </ul></li>
 <li><a href="#basic-data-manipulation"><span class="toc-section-number">2</span> basic data manipulation</a><ul>
-<li><a href="#factor"><span class="toc-section-number">2.1</span> factor</a></li>
+<li><a href="#remove-unused-factors"><span class="toc-section-number">2.1</span> remove unused factors</a></li>
+<li><a href="#lubridate-package"><span class="toc-section-number">2.2</span> lubridate package</a></li>
 </ul></li>
 </ul>
 </div>
 
 <p>R is a domain-specific programming language, specially designed to perform statistical analysis on data.</p>
+<p>测试</p>
 <div id="introduction-to-r-data-types-and-basic-operation" class="section level1">
 <h1><span class="header-section-number">1</span> introduction to R data types and basic operation</h1>
 <p>R has a very steep learning curve like python,octave,and sas. However unlike octave and sas, we can find a larger number of freely available resources and tutorials on the web to get help.</p>
@@ -147,8 +149,8 @@ levels(num.factor)</code></pre>
 </div>
 <div id="basic-data-manipulation" class="section level1">
 <h1><span class="header-section-number">2</span> basic data manipulation</h1>
-<div id="factor" class="section level2">
-<h2><span class="header-section-number">2.1</span> factor</h2>
+<div id="remove-unused-factors" class="section level2">
+<h2><span class="header-section-number">2.1</span> remove unused factors</h2>
 <pre class="r"><code>char.obj=&quot;datamanipulation&quot;
 
 substring(char.obj,1:nchar(char.obj),1:nchar(char.obj))</code></pre>
@@ -176,6 +178,34 @@ table(factor.obj1)</code></pre>
 <pre><code>## factor.obj2
 ## a d i l m n o p t u 
 ## 4 1 2 1 1 2 1 1 2 1</code></pre>
+</div>
+<div id="lubridate-package" class="section level2">
+<h2><span class="header-section-number">2.2</span> lubridate package</h2>
+<pre class="r"><code>library(lubridate)
+mdy(&quot;1-1-1970&quot;)</code></pre>
+<pre><code>## [1] &quot;1970-01-01 UTC&quot;</code></pre>
+<pre class="r"><code>mdy(&quot;01-01-1970&quot;)</code></pre>
+<pre><code>## [1] &quot;1970-01-01 UTC&quot;</code></pre>
+<pre class="r"><code>mdy(&quot;1-01-1970&quot;)</code></pre>
+<pre><code>## [1] &quot;1970-01-01 UTC&quot;</code></pre>
+<pre class="r"><code>mdy(&quot;1-01-70&quot;)</code></pre>
+<pre><code>## [1] &quot;2070-01-01 UTC&quot;</code></pre>
+<pre class="r"><code># heterogeneous date
+hetero_date=c(&quot;second chapter due on 2013, august, 24&quot;,&quot;first chapter submitted on 2013  aug  18&quot;,&quot;2013 aug 23&quot;)
+ymd(hetero_date)</code></pre>
+<pre><code>## Warning: All formats failed to parse. No formats found.</code></pre>
+<pre><code>## [1] NA NA NA</code></pre>
+<pre class="r"><code># change month
+
+date=dmy(&quot;23-07-2013&quot;)
+date</code></pre>
+<pre><code>## [1] &quot;2013-07-23 UTC&quot;</code></pre>
+<pre class="r"><code>month(date)</code></pre>
+<pre><code>## [1] 7</code></pre>
+<pre class="r"><code>month(date)=8
+date</code></pre>
+<pre><code>## [1] &quot;2013-08-23 UTC&quot;</code></pre>
+<p>we</p>
 </div>
 </div>
 

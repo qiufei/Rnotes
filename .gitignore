@@ -12,3 +12,17 @@
 vignettes/*.html
 vignettes/*.pdf
 .Rproj.user
+
+
+# Ignore some byproduct files #
+########################################
+*.aux
+*.bbl
+*.blg
+cache/*
+figure/*
+*.log
+*.pdf
+*.gz
+*.tex
+*.html

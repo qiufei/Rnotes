@@ -4,6 +4,7 @@ September 10, 2015
 
 R is a domain-specific programming language, specially designed to perform statistical analysis on data.
 
+测试
 
 # introduction to R data types and basic operation
 
@@ -151,7 +152,7 @@ In R, a numeric missing value is represented by `NA`, while character missing va
 
 # basic data manipulation
 
-## factor
+## remove unused factors
 
 
 ```r
@@ -217,4 +218,82 @@ table(factor.obj2)
 ## 4 1 2 1 1 2 1 1 2 1
 ```
 
+## lubridate package
 
+
+```r
+library(lubridate)
+mdy("1-1-1970")
+```
+
+```
+## [1] "1970-01-01 UTC"
+```
+
+```r
+mdy("01-01-1970")
+```
+
+```
+## [1] "1970-01-01 UTC"
+```
+
+```r
+mdy("1-01-1970")
+```
+
+```
+## [1] "1970-01-01 UTC"
+```
+
+```r
+mdy("1-01-70")
+```
+
+```
+## [1] "2070-01-01 UTC"
+```
+
+```r
+# heterogeneous date
+hetero_date=c("second chapter due on 2013, august, 24","first chapter submitted on 2013  aug  18","2013 aug 23")
+ymd(hetero_date)
+```
+
+```
+## Warning: All formats failed to parse. No formats found.
+```
+
+```
+## [1] NA NA NA
+```
+
+```r
+# change month
+
+date=dmy("23-07-2013")
+date
+```
+
+```
+## [1] "2013-07-23 UTC"
+```
+
+```r
+month(date)
+```
+
+```
+## [1] 7
+```
+
+```r
+month(date)=8
+date
+```
+
+```
+## [1] "2013-08-23 UTC"
+```
+
+we
