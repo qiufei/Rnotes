@@ -4,7 +4,7 @@ September 10, 2015
 
 R is a domain-specific programming language, specially designed to perform statistical analysis on data.
 
-测试
+
 
 # introduction to R data types and basic operation
 
@@ -296,4 +296,25 @@ date
 ## [1] "2013-08-23 UTC"
 ```
 
-we
+## keeping only values greater than 6
+
+usually, numerical integers are used for subscripting, but logical vectors can also be used for the same purpose.
+
+
+```r
+num10=c(3,2,5,3,9,6,7,9,2,3)
+num10>6
+```
+
+```
+##  [1] FALSE FALSE FALSE FALSE  TRUE FALSE  TRUE  TRUE FALSE FALSE
+```
+
+```r
+num10[num10>6]
+```
+
+```
+## [1] 9 7 9
+```
+
