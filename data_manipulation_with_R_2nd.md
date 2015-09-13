@@ -255,20 +255,6 @@ mdy("1-01-70")
 ```
 
 ```r
-# heterogeneous date
-hetero_date=c("second chapter due on 2013, august, 24","first chapter submitted on 2013  aug  18","2013 aug 23")
-ymd(hetero_date)
-```
-
-```
-## Warning: All formats failed to parse. No formats found.
-```
-
-```
-## [1] NA NA NA
-```
-
-```r
 # change month
 
 date=dmy("23-07-2013")
