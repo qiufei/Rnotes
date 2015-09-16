@@ -141,3 +141,94 @@ num10>6
 num10[num10>6]
 ```
 
+# chapter 3 applying the split-apply-combine strategy
+
+
+## split-apply-combine using base function of R
+```{r}
+library(xlsx)
+price=read.xlsx(file='chapter3.xls',sheetIndex = 1)
+
+### step 1: split
+
+# detailed code to implement the split-apply-combine approach
+
+shanghai=subset(price,region=='shanghai',select = equipment:agriculture)
+
+zhejiang=subset(price,region=='zhejiang',select = equipment:agriculture)
+
+jiangsu=subset(price,region=='jiangsu',select = equipment:agriculture)
+
+# less code to implement the split-apply-combine approach
+
+price.split=split(price,price$region)
+    # if region is not factor ,you should use as.factor(price$region)
+
+### step 2 : apply
+# apply mean funtion to calculate mean
+
+price.apply=lapply(price.split,function(x) colMeans(x[,3:6]))
+
+### step 3 : combine
+
+price.combine=do.call(rbind,price.apply)
+
+price.combine
+
+str(price.combine)
+
+```
+
+
+## split-apply-combine using `plyr` package
+
+the `plyr` package works on every type of data structure, whereas the `dplyr` package is designed to workonly on data frames.
+
+
+the most important utility of the `plyr` package is that a single line of code can perform all the split,apply and combine steps.
+
+```{r}
+library(plyr)
+price.mean=ddply(price,.(region),function(x) colMeans(x[,3:6]))
+
+price.mean
+
+str(price.mean)
+```
+
+## an array example
+
+```{r}
+
+class(iris3)
+dim(iris3)
+
+
+iris.mean1=adply(iris3,.margins = 3,colMeans)
+iris.mean1
+class(iris.mean1)
+
+iris.mean2=aaply(iris3,.margins = 3,colMeans)
+iris.mean2
+class(iris.mean2)  # note that here the class is showing "matrix",since the output is a two dimensional array which represents matrix. 
+
+iris.mean3=alply(iris3,.margins = 3,colMeans)
+iris.mean3
+class(iris.mean2)
+
+
+```
+
+
+## three main arguments for the `plyr` common functions 
+
+1. a*ply(.data, .margins, .fun, ..., .progress = "none")
+2. d*ply(.data, .variables, .fun, ..., .progress = "none")
+3. l*ply(.data, .fun, ..., .progress = "none")
+
+我的理解:list最本质的特征是它能处理非齐整的数据,所以没办法按照margin或者variable来分层.或者这么说,如果是一个完全齐整的list的,何不转化为array或datafame来处理?
+
+If we want to monitor the progress of the processing task, the `.progress` argument should be specified. It will not show the progress status by default,that is `.progress = "none"'`.
+
+
+

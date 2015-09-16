@@ -304,3 +304,221 @@ num10[num10>6]
 ## [1] 9 7 9
 ```
 
+# chapter 3 applying the split-apply-combine strategy
+
+
+## split-apply-combine using base function of R
+
+```r
+library(xlsx)
+```
+
+```
+## Loading required package: rJava
+## Loading required package: xlsxjars
+```
+
+```r
+price=read.xlsx(file='chapter3.xls',sheetIndex = 1)
+
+### step 1: split
+
+# detailed code to implement the split-apply-combine approach
+
+shanghai=subset(price,region=='shanghai',select = equipment:agriculture)
+
+zhejiang=subset(price,region=='zhejiang',select = equipment:agriculture)
+
+jiangsu=subset(price,region=='jiangsu',select = equipment:agriculture)
+
+# less code to implement the split-apply-combine approach
+
+price.split=split(price,price$region)
+    # if region is not factor ,you should use as.factor(price$region)
+
+### step 2 : apply
+# apply mean funtion to calculate mean
+
+price.apply=lapply(price.split,function(x) colMeans(x[,3:6]))
+
+### step 3 : combine
+
+price.combine=do.call(rbind,price.apply)
+
+price.combine
+```
+
+```
+##          equipment      gdp investment agriculture
+## jiangsu   99.71905 112.0476   102.4548    105.4595
+## shanghai  98.52143 109.3857   101.7524    105.7762
+## zhejiang  99.93333 110.2905   102.2119    106.9119
+```
+
+```r
+str(price.combine)
+```
+
+```
+##  num [1:3, 1:4] 99.7 98.5 99.9 112 109.4 ...
+##  - attr(*, "dimnames")=List of 2
+##   ..$ : chr [1:3] "jiangsu" "shanghai" "zhejiang"
+##   ..$ : chr [1:4] "equipment" "gdp" "investment" "agriculture"
+```
+
+
+## split-apply-combine using `plyr` package
+
+the `plyr` package works on every type of data structure, whereas the `dplyr` package is designed to workonly on data frames.
+
+
+the most important utility of the `plyr` package is that a single line of code can perform all the split,apply and combine steps.
+
+
+```r
+library(plyr)
+```
+
+```
+## 
+## Attaching package: 'plyr'
+## 
+## The following object is masked from 'package:lubridate':
+## 
+##     here
+```
+
+```r
+price.mean=ddply(price,.(region),function(x) colMeans(x[,3:6]))
+
+price.mean
+```
+
+```
+##     region equipment      gdp investment agriculture
+## 1  jiangsu  99.71905 112.0476   102.4548    105.4595
+## 2 shanghai  98.52143 109.3857   101.7524    105.7762
+## 3 zhejiang  99.93333 110.2905   102.2119    106.9119
+```
+
+```r
+str(price.mean)
+```
+
+```
+## 'data.frame':	3 obs. of  5 variables:
+##  $ region     : Factor w/ 3 levels "jiangsu","shanghai",..: 1 2 3
+##  $ equipment  : num  99.7 98.5 99.9
+##  $ gdp        : num  112 109 110
+##  $ investment : num  102 102 102
+##  $ agriculture: num  105 106 107
+```
+
+## an array example
+
+
+```r
+class(iris3)
+```
+
+```
+## [1] "array"
+```
+
+```r
+dim(iris3)
+```
+
+```
+## [1] 50  4  3
+```
+
+```r
+iris.mean1=adply(iris3,.margins = 3,colMeans)
+iris.mean1
+```
+
+```
+##           X1 Sepal L. Sepal W. Petal L. Petal W.
+## 1     Setosa    5.006    3.428    1.462    0.246
+## 2 Versicolor    5.936    2.770    4.260    1.326
+## 3  Virginica    6.588    2.974    5.552    2.026
+```
+
+```r
+class(iris.mean1)
+```
+
+```
+## [1] "data.frame"
+```
+
+```r
+iris.mean2=aaply(iris3,.margins = 3,colMeans)
+iris.mean2
+```
+
+```
+##             
+## X1           Sepal L. Sepal W. Petal L. Petal W.
+##   Setosa        5.006    3.428    1.462    0.246
+##   Versicolor    5.936    2.770    4.260    1.326
+##   Virginica     6.588    2.974    5.552    2.026
+```
+
+```r
+class(iris.mean2)  # note that here the class is showing "matrix",since the output is a two dimensional array which represents matrix. 
+```
+
+```
+## [1] "matrix"
+```
+
+```r
+iris.mean3=alply(iris3,.margins = 3,colMeans)
+iris.mean3
+```
+
+```
+## $`1`
+## Sepal L. Sepal W. Petal L. Petal W. 
+##    5.006    3.428    1.462    0.246 
+## 
+## $`2`
+## Sepal L. Sepal W. Petal L. Petal W. 
+##    5.936    2.770    4.260    1.326 
+## 
+## $`3`
+## Sepal L. Sepal W. Petal L. Petal W. 
+##    6.588    2.974    5.552    2.026 
+## 
+## attr(,"split_type")
+## [1] "array"
+## attr(,"split_labels")
+##           X1
+## 1     Setosa
+## 2 Versicolor
+## 3  Virginica
+```
+
+```r
+class(iris.mean2)
+```
+
+```
+## [1] "matrix"
+```
+
+
+## 3 main arguments for the `plyr` common functions 
+
+1. a*ply(.data, .margins, .fun, ..., .progress = "none")
+2. d*ply(.data, .variables, .fun, ..., .progress = "none")
+3. l*ply(.data, .fun, ..., .progress = "none")
+
+我的理解:list最本质的特征是它能处理非齐整的数据,所以没办法按照margin或者variable来分层.或者这么说,如果是一个完全齐整的list的,何不转化为array或datafame来处理?
+
+If we want to monitor the progress of the processing task, the `.progress` argument should be specified. It will not show the progress status by default,that is `.progress = "none"'`.
+
+
+
